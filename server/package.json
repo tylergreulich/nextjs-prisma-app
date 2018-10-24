@@ -1,0 +1,34 @@
+{
+  "name": "sick-fits",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "dev": "npm-run-all --parallel start playground",
+    "deploy": "prisma deploy",
+    "playground": "graphql playground"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "6.0.0",
+    "graphql": "^0.13.2",
+    "graphql-yoga": "1.16.2",
+    "jsonwebtoken": "8.3.0",
+    "nodemailer": "^4.6.8",
+    "nodemon": "1.18.4",
+    "prisma-binding": "2.1.6",
+    "stripe": "^6.12.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/dotenv": "^4.0.3",
+    "@types/jsonwebtoken": "^7.2.8",
+    "@types/nodemailer": "^4.6.5",
+    "@types/stripe": "^6.0.3",
+    "graphql-cli": "2.16.7",
+    "npm-run-all": "4.1.3",
+    "prisma": "1.18.1",
+    "ts-node": "7.0.1",
+    "typescript": "3.1.3"
+  }
+}

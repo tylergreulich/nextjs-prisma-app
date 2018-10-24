@@ -1,0 +1,19 @@
+import { Prisma } from './generated/prisma';
+
+export interface Context {
+  db: Prisma;
+  request: any;
+}
+
+export const hasPermission = (user, permissionsNeeded) => {
+  const matchedPermissions = user.permissions.filter(permissionTheyHave =>
+    permissionsNeeded.includes(permissionTheyHave)
+  );
+  if (!matchedPermissions.length) {
+    throw new Error(`You do not have sufficient permissions
+      : ${permissionsNeeded}
+      You Have:
+      ${user.permissions}
+      `);
+  }
+};
