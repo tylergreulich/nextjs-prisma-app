@@ -8,7 +8,7 @@
     "interface-name": false,
     "no-submodule-imports": false,
     "jsx-no-lambda": false,
-    "no-unused-expression": [true, "allow-tagged-template"]
+    "no-unused-expression": [true, "allow-tagged-template"],
   },
   "linterOptions": {
     "exclude": [

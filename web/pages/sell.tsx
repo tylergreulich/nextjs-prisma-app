@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { CreateItem } from '../components/CreateItem';
 
 const Sell = () => (
   <>
-    <p>Sell!</p>
+    <CreateItem />
   </>
 );
 

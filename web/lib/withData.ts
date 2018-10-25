@@ -12,7 +12,7 @@ const createClient = ({ headers }: PresetConfig) => {
         },
         headers
       });
-    }
+    },
   });
 };
 

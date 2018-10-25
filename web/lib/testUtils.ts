@@ -1,7 +1,7 @@
-import * as casual from 'casual';
+import { seed, name, email, word, words, uuid } from 'casual';
 
 // seed it so we get consistent results
-casual.seed(777);
+seed(777);
 
 const fakeItem = () => ({
   __typename: 'Item',
@@ -17,8 +17,8 @@ const fakeItem = () => ({
 const fakeUser = () => ({
   __typename: 'User',
   id: '4234',
-  name: casual.name,
-  email: casual.email,
+  name,
+  email,
   permissions: ['ADMIN'],
   orders: [],
   cart: []
@@ -26,12 +26,12 @@ const fakeUser = () => ({
 
 const fakeOrderItem = () => ({
   __typename: 'OrderItem',
-  id: casual.uuid,
-  image: `${casual.word}.jpg`,
-  title: casual.words(),
+  id: uuid,
+  image: `${word}.jpg`,
+  title: words(),
   price: 4234,
   quantity: 1,
-  description: casual.words()
+  description: words()
 });
 
 const fakeOrder = () => ({
