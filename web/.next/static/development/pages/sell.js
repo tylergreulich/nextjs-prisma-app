@@ -23,6 +23,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _styles_Form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/Form */ "./components/styles/Form.ts");
 /* harmony import */ var _ErrorMessage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ErrorMessage */ "./components/ErrorMessage.tsx");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../config */ "./config.ts");
 
 var _jsxFileName = "C:\\Users\\david\\Documents\\GraphQL\\sick-fits\\web\\components\\CreateItem.tsx";
 
@@ -67,6 +68,8 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+ // import axios from 'axios';
+
 
 
 
@@ -97,7 +100,7 @@ function (_React$Component) {
       price: 1000
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onChangeHandler", function (event) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleChange", function (event) {
       var _event$currentTarget = event.currentTarget,
           name = _event$currentTarget.name,
           type = _event$currentTarget.type,
@@ -106,6 +109,49 @@ function (_React$Component) {
 
       _this.setState(_objectSpread({}, _this.state, _defineProperty({}, name, val)));
     });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "uploadFile",
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+        var files, data, res, file;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                files = event.currentTarget.files;
+                data = new FormData();
+                data.append('file', files[0]);
+                data.append('upload_preset', 'sickfits');
+                _context.next = 6;
+                return fetch(_config__WEBPACK_IMPORTED_MODULE_7__["cloudinaryUrl"], {
+                  method: 'POST',
+                  body: data
+                });
+
+              case 6:
+                res = _context.sent;
+                _context.next = 9;
+                return res.json();
+
+              case 9:
+                file = _context.sent;
+                console.log(file);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
 
     return _this;
   }
@@ -124,32 +170,32 @@ function (_React$Component) {
         variables: this.state,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 85
         },
         __self: this
-      }, function (createItem, _ref) {
-        var loading = _ref.loading,
-            error = _ref.error;
+      }, function (createItem, _ref2) {
+        var loading = _ref2.loading,
+            error = _ref2.error;
         return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_styles_Form__WEBPACK_IMPORTED_MODULE_5__["Form"], {
           onSubmit:
           /*#__PURE__*/
           function () {
-            var _ref2 = _asyncToGenerator(
+            var _ref3 = _asyncToGenerator(
             /*#__PURE__*/
-            _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-              var _ref3, data;
+            _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(event) {
+              var _ref4, data;
 
-              return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+              return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
                 while (1) {
-                  switch (_context.prev = _context.next) {
+                  switch (_context2.prev = _context2.next) {
                     case 0:
                       event.preventDefault();
-                      _context.next = 3;
+                      _context2.next = 3;
                       return createItem();
 
                     case 3:
-                      _ref3 = _context.sent;
-                      data = _ref3.data;
+                      _ref4 = _context2.sent;
+                      data = _ref4.data;
                       console.log(data);
                       next_router__WEBPACK_IMPORTED_MODULE_4___default.a.push({
                         pathname: '/item',
@@ -160,26 +206,26 @@ function (_React$Component) {
 
                     case 7:
                     case "end":
-                      return _context.stop();
+                      return _context2.stop();
                   }
                 }
-              }, _callee, this);
+              }, _callee2, this);
             }));
 
-            return function (_x) {
-              return _ref2.apply(this, arguments);
+            return function (_x2) {
+              return _ref3.apply(this, arguments);
             };
           }(),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 72
+            lineNumber: 90
           },
           __self: this
         }, react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_ErrorMessage__WEBPACK_IMPORTED_MODULE_6__["ErrorMesssage"], {
           error: error,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 83
+            lineNumber: 101
           },
           __self: this
         }), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("fieldset", {
@@ -187,14 +233,33 @@ function (_React$Component) {
           "aria-busy": loading,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 84
+            lineNumber: 102
           },
           __self: this
         }, react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", {
+          htmlFor: "file",
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 103
+          },
+          __self: this
+        }, "Image"), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("input", {
+          type: "file",
+          id: "file",
+          name: "file",
+          placeholder: "Upload an image",
+          required: true,
+          onChange: _this2.uploadFile,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 104
+          },
+          __self: this
+        }), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", {
           htmlFor: "title",
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 85
+            lineNumber: 112
           },
           __self: this
         }, "Title"), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("input", {
@@ -204,17 +269,17 @@ function (_React$Component) {
           placeholder: "Title",
           required: true,
           value: title,
-          onChange: _this2.onChangeHandler,
+          onChange: _this2.handleChange,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 86
+            lineNumber: 113
           },
           __self: this
         }), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", {
           htmlFor: "price",
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 95
+            lineNumber: 122
           },
           __self: this
         }, "Price"), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("input", {
@@ -224,17 +289,17 @@ function (_React$Component) {
           placeholder: "Price",
           required: true,
           value: price,
-          onChange: _this2.onChangeHandler,
+          onChange: _this2.handleChange,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 96
+            lineNumber: 123
           },
           __self: this
         }), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", {
           htmlFor: "description",
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 105
+            lineNumber: 132
           },
           __self: this
         }, "Description"), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("textarea", {
@@ -243,17 +308,17 @@ function (_React$Component) {
           placeholder: "Enter A Description",
           required: true,
           value: description,
-          onChange: _this2.onChangeHandler,
+          onChange: _this2.handleChange,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 106
+            lineNumber: 133
           },
           __self: this
         }), react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("button", {
           type: "submit",
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 114
+            lineNumber: 141
           },
           __self: this
         }, "Submit")));
@@ -392,6 +457,24 @@ var Form = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].form(_templ
   var theme = _ref.theme;
   return theme.red;
 }, loading);
+
+/***/ }),
+
+/***/ "./config.ts":
+/*!*******************!*\
+  !*** ./config.ts ***!
+  \*******************/
+/*! exports provided: endpoint, perPage, cloudinaryUrl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "endpoint", function() { return endpoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "perPage", function() { return perPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cloudinaryUrl", function() { return cloudinaryUrl; });
+var endpoint = "http://localhost:4444";
+var perPage = 4;
+var cloudinaryUrl = 'https://res.cloudinary.com/dajpsw8tt/image/upload/';
 
 /***/ }),
 
@@ -25828,7 +25911,7 @@ var Sell = function Sell() {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /*!******************************!*\
   !*** multi ./pages/sell.tsx ***!
   \******************************/
@@ -25853,5 +25936,5 @@ module.exports = dll_10edf27d814a728d21af;
 
 /***/ })
 
-},[[5,"static/runtime/webpack.js"]]]));;
+},[[4,"static/runtime/webpack.js"]]]));;
 //# sourceMappingURL=sell.js.map

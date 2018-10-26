@@ -488,15 +488,17 @@ var NavStyles = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].ul(_te
 /*!*******************!*\
   !*** ./config.ts ***!
   \*******************/
-/*! exports provided: endpoint, perPage */
+/*! exports provided: endpoint, perPage, cloudinaryUrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "endpoint", function() { return endpoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "perPage", function() { return perPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cloudinaryUrl", function() { return cloudinaryUrl; });
 var endpoint = "http://localhost:4444";
 var perPage = 4;
+var cloudinaryUrl = 'https://res.cloudinary.com/dajpsw8tt/image/upload/';
 
 /***/ }),
 
@@ -48117,30 +48119,29 @@ function (_App) {
           Component = _this$props.Component,
           apollo = _this$props.apollo,
           pageProps = _this$props.pageProps;
-      console.log(this.props);
       return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](next_app__WEBPACK_IMPORTED_MODULE_2__["Container"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 26
+          lineNumber: 25
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react_apollo__WEBPACK_IMPORTED_MODULE_3__["ApolloProvider"], {
         client: apollo,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 27
+          lineNumber: 26
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_components_Page__WEBPACK_IMPORTED_MODULE_4__["Page"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
+          lineNumber: 27
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_1__["createElement"](Component, _extends({}, pageProps, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 29
+          lineNumber: 28
         },
         __self: this
       })))));

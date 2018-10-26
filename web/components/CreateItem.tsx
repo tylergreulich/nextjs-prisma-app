@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
+// import axios from 'axios';
 
 import { Form } from './styles/Form';
 import {
@@ -9,6 +10,7 @@ import {
   CreateItemMutation
 } from '../graphql/schemaTypes';
 import { ErrorMesssage } from './ErrorMessage';
+import { cloudinaryUrl } from '../config';
 
 interface CreateItemState {
   title: string;
@@ -47,7 +49,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
     price: 1000
   };
 
-  onChangeHandler = (
+  handleChange = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, type, value } = event.currentTarget;
@@ -58,6 +60,22 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
       ...this.state,
       [name]: val
     });
+  };
+
+  uploadFile = async (event: React.FormEvent<HTMLInputElement>) => {
+    const files = event.currentTarget.files;
+
+    const data = new FormData();
+    data.append('file', files![0]);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch(cloudinaryUrl, {
+      method: 'POST',
+      body: data
+    });
+
+    const file = await res.json();
+    console.log(file);
   };
 
   render() {
@@ -82,6 +100,15 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
           >
             <ErrorMesssage error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
+              <label htmlFor="file">Image</label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                placeholder="Upload an image"
+                required={true}
+                onChange={this.uploadFile}
+              />
               <label htmlFor="title">Title</label>
               <input
                 type="text"
@@ -90,7 +117,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
                 placeholder="Title"
                 required={true}
                 value={title}
-                onChange={this.onChangeHandler}
+                onChange={this.handleChange}
               />
               <label htmlFor="price">Price</label>
               <input
@@ -100,7 +127,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
                 placeholder="Price"
                 required={true}
                 value={price}
-                onChange={this.onChangeHandler}
+                onChange={this.handleChange}
               />
               <label htmlFor="description">Description</label>
               <textarea
@@ -109,7 +136,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
                 placeholder="Enter A Description"
                 required={true}
                 value={description}
-                onChange={this.onChangeHandler}
+                onChange={this.handleChange}
               />
               <button type="submit">Submit</button>
             </fieldset>
