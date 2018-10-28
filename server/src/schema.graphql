@@ -8,10 +8,10 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
-  register(username: String! password: String!): Boolean
-  login(username: String! password: String!): Boolean
 }
 
 type Query {
   items: [Item]!
 }
+
+
