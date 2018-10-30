@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Item /> renders and matches the snapshots 1`] = `
+<img
+  src="dog.jpg"
+  alt="A cool item"
+/>
+`;
+
+exports[`<Item /> renders and matches the snapshots 2`] = `
+<span
+  class="sc-htpNat iCcKty"
+>
+  $50
+</span>
+`;
+
+exports[`<Item /> renders and matches the snapshots 3`] = `
+<a
+  href="/item?id=abc123"
+>
+  A cool item
+</a>
+`;

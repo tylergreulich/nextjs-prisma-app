@@ -1,10 +1,12 @@
 export interface ItemProps {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  largeImage: string;
+  item: {
+    id: string;
+    title: string;
+    price: number;
+    description: string;
+    image: string;
+    largeImage: string;
+  };
 }
 
 export interface GetItemsQuery {
@@ -25,4 +27,20 @@ export interface CreateItemMutationVariables {
   description: string;
   image?: string;
   largeImage?: string;
+}
+
+interface RegisterMutation_registerMutation {
+  id: string;
+  name: string;
+  password: string;
+}
+
+export interface RegisterMutation {
+  register: RegisterMutation_registerMutation | null;
+}
+
+export interface RegisterMutationVariables {
+  email: string;
+  name: string;
+  password: string;
 }

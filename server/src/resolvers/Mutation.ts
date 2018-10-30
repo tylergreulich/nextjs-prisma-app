@@ -1,3 +1,6 @@
+import { UserCreateInput } from './../generated/prisma';
+import * as bcrypt from 'bcryptjs';
+
 import { Context } from './../utils';
 import { ItemCreateInput } from '../generated/prisma';
 

@@ -47,7 +47,7 @@ export class Items extends React.Component {
             return (
               <ItemsList>
                 {data!.items.map((item: ItemProps) => (
-                  <Item {...item} key={item.id} />
+                  <Item {...item} key={item.item.id} />
                 ))}
               </ItemsList>
             );

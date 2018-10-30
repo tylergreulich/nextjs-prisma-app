@@ -1,6 +1,22 @@
 {
   "name": "nextjs-prisma-app",
   "version": "0.1.0",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
   "private": true,
   "dependencies": {
     "@zeit/next-typescript": "^1.1.1",
@@ -29,7 +45,7 @@
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts-ts eject",
     "next-dev": "next -p 7777",
     "next-build": "next build",

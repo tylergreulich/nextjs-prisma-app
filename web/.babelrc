@@ -1,4 +1,14 @@
 {
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "modules": "commonjs"
+        }],
+        "next/babel"
+      ]
+    }
+  },
   "presets": [
     "next/babel",
     "@zeit/next-typescript/babel"

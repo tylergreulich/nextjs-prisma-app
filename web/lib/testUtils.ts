@@ -1,3 +1,4 @@
+import { fireEvent } from 'react-testing-library';
 import { seed, name, email, word, words, uuid } from 'casual';
 
 // seed it so we get consistent results
@@ -78,11 +79,19 @@ class LocalStorageMock {
   }
 }
 
+const wait = (amount: number) =>
+  new Promise(resolve => setTimeout(resolve, amount));
+
+const type = (inputField: HTMLInputElement, inputContent: string) =>
+  fireEvent.change(inputField, { target: { value: inputContent } });
+
 export {
   LocalStorageMock,
   fakeItem,
   fakeUser,
   fakeCartItem,
   fakeOrder,
-  fakeOrderItem
+  fakeOrderItem,
+  wait,
+  type
 };
