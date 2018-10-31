@@ -1,15 +1,17 @@
 import * as React from 'react';
 import Link from 'next/link';
 
-import { ItemProps } from '../graphql/schemaTypes';
+import { ItemProps } from '../interfaces/Item.interface';
 import { ItemStyles } from './styles/ItemStyles';
 import { Title } from './styles/Title';
 import { PriceTag } from './styles/PriceTag';
 import { formatMoney } from '../lib/formatMoney';
 
+import { DeleteItem } from './DeleteItem';
+
 export class Item extends React.Component<ItemProps, {}> {
   render() {
-    const { id, title, price, description, image } = this.props.item;
+    const { id, title, price, description, image } = this.props;
 
     return (
       <ItemStyles>
@@ -26,7 +28,7 @@ export class Item extends React.Component<ItemProps, {}> {
             <a>Edit</a>
           </Link>
           <button>Add to Cart</button>
-          <button>Remove from Cart</button>
+          <DeleteItem id={id}>Delete This Item</DeleteItem>
         </div>
       </ItemStyles>
     );

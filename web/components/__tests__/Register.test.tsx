@@ -2,8 +2,10 @@ import * as React from 'react';
 import { render, fireEvent } from 'react-testing-library';
 import { MockedProvider, MockedResponse } from 'react-apollo/test-utils';
 
-import { fakeUser, wait, type } from '../../lib/testUtils';
+import { fakeUser, type } from '../../lib/testUtils';
 import { Register, REGISTER_MUTATION } from '../Register';
+
+import { wait } from 'waait';
 
 const { email, name } = fakeUser();
 const mocks: MockedResponse[] = [

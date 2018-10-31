@@ -1,44 +1,23 @@
 import * as React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import Router from 'next/router';
-// import axios from 'axios';
+import axios from 'axios';
 
 import { Form } from './styles/Form';
 import {
   CreateItemMutationVariables,
   CreateItemMutation
 } from '../graphql/schemaTypes';
+import {
+  FormElementEvent,
+  InputElementEvent,
+  TextAreaOrInputElementEvent
+} from '../interfaces/shared/FormEvents';
+import { CreateItemState } from '../interfaces/CreateItem.interface';
 import { ErrorMesssage } from './ErrorMessage';
 import { cloudinaryUrl } from '../config';
 
-interface CreateItemState {
-  title: string;
-  description: string;
-  image: string;
-  largeImage: string;
-  price: number;
-}
-
-export const CREATE_ITEM_MUTATION = gql`
-  mutation CREATE_ITEM_MUTATION(
-    $title: String!
-    $description: String!
-    $image: String
-    $largeImage: String
-    $price: Int!
-  ) {
-    createItem(
-      title: $title
-      description: $description
-      image: $image
-      largeImage: $largeImage
-      price: $price
-    ) {
-      id
-    }
-  }
-`;
+import { CREATE_ITEM_MUTATION } from 'graphql/mutations/CreateItemMutation';
 
 export class CreateItem extends React.Component<{}, CreateItemState> {
   state: CreateItemState = {
@@ -49,9 +28,28 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
     price: 1000
   };
 
-  handleChange = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  sendFileData = async (files: FileList | null, fileData: FormData) => {
+    if (files) {
+      fileData.append('file', files[0]);
+      fileData.append('upload_preset', 'sickfits');
+      const { data }: any = await axios
+        .post(cloudinaryUrl, fileData)
+        .catch(err => console.log('ERR', err));
+
+      this.setState({
+        image: data.secure_url,
+        largeImage: data.eager[0].secure_url
+      });
+    }
+  };
+
+  uploadFile = (event: InputElementEvent) => {
+    const { files } = event.currentTarget;
+    const fileData = new FormData();
+    this.sendFileData(files, fileData);
+  };
+
+  handleChange = (event: TextAreaOrInputElementEvent) => {
     const { name, type, value } = event.currentTarget;
 
     const val = type === 'number' ? parseFloat(value) : value;
@@ -62,24 +60,8 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
     });
   };
 
-  uploadFile = async (event: React.FormEvent<HTMLInputElement>) => {
-    const files = event.currentTarget.files;
-
-    const data = new FormData();
-    data.append('file', files![0]);
-    data.append('upload_preset', 'sickfits');
-
-    const res = await fetch(cloudinaryUrl, {
-      method: 'POST',
-      body: data
-    });
-
-    const file = await res.json();
-    console.log(file);
-  };
-
   render() {
-    const { title, description, price } = this.state;
+    const { title, description, price, image } = this.state;
 
     return (
       <Mutation<CreateItemMutation, CreateItemMutationVariables>
@@ -88,10 +70,9 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
       >
         {(createItem, { loading, error }) => (
           <Form
-            onSubmit={async (event: React.FormEvent<HTMLFormElement>) => {
+            onSubmit={async (event: FormElementEvent) => {
               event.preventDefault();
               const { data }: any = await createItem();
-              console.log(data);
               Router.push({
                 pathname: '/item',
                 query: { id: data.createItem.id }
@@ -109,6 +90,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
                 required={true}
                 onChange={this.uploadFile}
               />
+              {image && <img src={image} width="200" alt="Upload Preview" />}
               <label htmlFor="title">Title</label>
               <input
                 type="text"

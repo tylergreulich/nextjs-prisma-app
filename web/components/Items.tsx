@@ -1,22 +1,11 @@
 import * as React from 'react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { GetItemsQuery, ItemProps } from 'graphql/schemaTypes';
 import styled from 'styled-components';
-import { Item } from './Item';
 
-export const GET_ITEMS_QUERY = gql`
-  query GET_ITEMS_QUERY {
-    items {
-      id
-      title
-      price
-      description
-      image
-      largeImage
-    }
-  }
-`;
+import { GET_ITEMS_QUERY } from '../graphql/queries/GetItemsQuery';
+import { GetItemsQuery } from '../graphql/schemaTypes';
+import { ItemProps } from '../interfaces/Item.interface';
+import { Item } from './Item';
 
 const Center = styled.div`
   text-align: center;
@@ -47,7 +36,7 @@ export class Items extends React.Component {
             return (
               <ItemsList>
                 {data!.items.map((item: ItemProps) => (
-                  <Item {...item} key={item.item.id} />
+                  <Item {...item} key={item.id} />
                 ))}
               </ItemsList>
             );

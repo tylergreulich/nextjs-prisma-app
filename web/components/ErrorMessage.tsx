@@ -16,7 +16,7 @@ const ErrorStyles = styled.div`
   }
 `;
 
-export const ErrorMesssage = ({ error }: any) => {
+export const ErrorMessage = ({ error }: any) => {
   if (!error || !error.message) {
     return null;
   }

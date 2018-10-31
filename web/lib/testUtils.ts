@@ -79,9 +79,6 @@ class LocalStorageMock {
   }
 }
 
-const wait = (amount: number) =>
-  new Promise(resolve => setTimeout(resolve, amount));
-
 const type = (inputField: HTMLInputElement, inputContent: string) =>
   fireEvent.change(inputField, { target: { value: inputContent } });
 
@@ -92,6 +89,5 @@ export {
   fakeCartItem,
   fakeOrder,
   fakeOrderItem,
-  wait,
   type
 };

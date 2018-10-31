@@ -1,5 +1,6 @@
-import { Context } from './../utils';
+import { forwardTo } from 'prisma-binding';
 
 export const Query = {
-  items: async (_, __, { db }: Context) => await db.query.items({})
+  items: forwardTo('db'),
+  item: forwardTo('db')
 };
