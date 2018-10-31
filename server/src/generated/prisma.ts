@@ -527,6 +527,15 @@ type PageInfo {
   endCursor: String
 }
 
+enum Permission {
+  ADMIN
+  USER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
+
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
@@ -551,6 +560,10 @@ type User implements Node {
   id: ID!
   name: String!
   email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
 }
 
 """A connection to a list of items."""
@@ -566,6 +579,14 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+}
+
+input UserCreatepermissionsInput {
+  set: [Permission!]
 }
 
 """An edge in a connection."""
@@ -584,6 +605,12 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  password_ASC
+  password_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -594,6 +621,10 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
 }
 
 type UserSubscriptionPayload {
@@ -638,11 +669,23 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
 }
 
 input UserWhereInput {
@@ -774,10 +817,113 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: Float
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [Float!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [Float!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: Float
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: Float
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: Float
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: Float
 }
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
 `
 
@@ -787,20 +933,12 @@ export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDe
  * Types
 */
 
-export type MutationType =   'CREATED' |
-  'UPDATED' |
-  'DELETED'
-
-export type UserOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'email_ASC' |
-  'email_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
+export type Permission =   'ADMIN' |
+  'USER' |
+  'ITEMCREATE' |
+  'ITEMUPDATE' |
+  'ITEMDELETE' |
+  'PERMISSIONUPDATE'
 
 export type ItemOrderByInput =   'id_ASC' |
   'id_DESC' |
@@ -819,13 +957,48 @@ export type ItemOrderByInput =   'id_ASC' |
   'updatedAt_ASC' |
   'updatedAt_DESC'
 
+export type UserOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'email_ASC' |
+  'email_DESC' |
+  'password_ASC' |
+  'password_DESC' |
+  'resetToken_ASC' |
+  'resetToken_DESC' |
+  'resetTokenExpiry_ASC' |
+  'resetTokenExpiry_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type MutationType =   'CREATED' |
+  'UPDATED' |
+  'DELETED'
+
+export interface UserUpdateManyMutationInput {
+  name?: String
+  email?: String
+  password?: String
+  resetToken?: String
+  resetTokenExpiry?: Float
+  permissions?: UserUpdatepermissionsInput
+}
+
 export interface UserCreateInput {
   name: String
   email: String
+  password: String
+  resetToken?: String
+  resetTokenExpiry?: Float
+  permissions?: UserCreatepermissionsInput
 }
 
 export interface UserWhereUniqueInput {
   id?: ID_Input
+  email?: String
 }
 
 export interface UserWhereInput {
@@ -874,66 +1047,46 @@ export interface UserWhereInput {
   email_not_starts_with?: String
   email_ends_with?: String
   email_not_ends_with?: String
-}
-
-export interface UserSubscriptionWhereInput {
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: UserWhereInput
-}
-
-export interface ItemCreateInput {
-  title: String
-  description: String
-  image?: String
-  largeImage?: String
-  price: Int
-}
-
-export interface UserUpdateInput {
-  name?: String
-  email?: String
-}
-
-export interface ItemUpdateInput {
-  title?: String
-  description?: String
-  image?: String
-  largeImage?: String
-  price?: Int
+  password?: String
+  password_not?: String
+  password_in?: String[] | String
+  password_not_in?: String[] | String
+  password_lt?: String
+  password_lte?: String
+  password_gt?: String
+  password_gte?: String
+  password_contains?: String
+  password_not_contains?: String
+  password_starts_with?: String
+  password_not_starts_with?: String
+  password_ends_with?: String
+  password_not_ends_with?: String
+  resetToken?: String
+  resetToken_not?: String
+  resetToken_in?: String[] | String
+  resetToken_not_in?: String[] | String
+  resetToken_lt?: String
+  resetToken_lte?: String
+  resetToken_gt?: String
+  resetToken_gte?: String
+  resetToken_contains?: String
+  resetToken_not_contains?: String
+  resetToken_starts_with?: String
+  resetToken_not_starts_with?: String
+  resetToken_ends_with?: String
+  resetToken_not_ends_with?: String
+  resetTokenExpiry?: Float
+  resetTokenExpiry_not?: Float
+  resetTokenExpiry_in?: Float[] | Float
+  resetTokenExpiry_not_in?: Float[] | Float
+  resetTokenExpiry_lt?: Float
+  resetTokenExpiry_lte?: Float
+  resetTokenExpiry_gt?: Float
+  resetTokenExpiry_gte?: Float
 }
 
 export interface ItemWhereUniqueInput {
   id?: ID_Input
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: String
-  email?: String
-}
-
-export interface ItemSubscriptionWhereInput {
-  AND?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
-  OR?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
-  NOT?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ItemWhereInput
-}
-
-export interface ItemUpdateManyMutationInput {
-  title?: String
-  description?: String
-  image?: String
-  largeImage?: String
-  price?: Int
 }
 
 export interface ItemWhereInput {
@@ -1036,6 +1189,69 @@ export interface ItemWhereInput {
   updatedAt_gte?: DateTime
 }
 
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission
+}
+
+export interface ItemCreateInput {
+  title: String
+  description: String
+  image?: String
+  largeImage?: String
+  price: Int
+}
+
+export interface UserUpdateInput {
+  name?: String
+  email?: String
+  password?: String
+  resetToken?: String
+  resetTokenExpiry?: Float
+  permissions?: UserUpdatepermissionsInput
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission
+}
+
+export interface ItemSubscriptionWhereInput {
+  AND?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
+  OR?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
+  NOT?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ItemWhereInput
+}
+
+export interface ItemUpdateManyMutationInput {
+  title?: String
+  description?: String
+  image?: String
+  largeImage?: String
+  price?: Int
+}
+
+export interface ItemUpdateInput {
+  title?: String
+  description?: String
+  image?: String
+  largeImage?: String
+  price?: Int
+}
+
+export interface UserSubscriptionWhereInput {
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: UserWhereInput
+}
+
 /*
  * An object with an ID
 
@@ -1069,6 +1285,38 @@ export interface ItemPreviousValues {
   updatedAt: DateTime
 }
 
+export interface Item extends Node {
+  id: ID_Output
+  title: String
+  description: String
+  image?: String
+  largeImage?: String
+  price: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType
+  node?: User
+  updatedFields?: String[]
+  previousValues?: UserPreviousValues
+}
+
+export interface AggregateItem {
+  count: Int
+}
+
+export interface User extends Node {
+  id: ID_Output
+  name: String
+  email: String
+  password: String
+  resetToken?: String
+  resetTokenExpiry?: Float
+  permissions: Permission[]
+}
+
 export interface AggregateUser {
   count: Int
 }
@@ -1082,45 +1330,23 @@ export interface ItemEdge {
   cursor: String
 }
 
-export interface UserSubscriptionPayload {
-  mutation: MutationType
-  node?: User
-  updatedFields?: String[]
-  previousValues?: UserPreviousValues
-}
-
-export interface User extends Node {
-  id: ID_Output
-  name: String
-  email: String
-}
-
 export interface UserPreviousValues {
   id: ID_Output
   name: String
   email: String
+  password: String
+  resetToken?: String
+  resetTokenExpiry?: Float
+  permissions: Permission[]
 }
 
-export interface AggregateItem {
-  count: Int
-}
+/*
+ * An edge in a connection.
 
-export interface ItemSubscriptionPayload {
-  mutation: MutationType
-  node?: Item
-  updatedFields?: String[]
-  previousValues?: ItemPreviousValues
-}
-
-export interface Item extends Node {
-  id: ID_Output
-  title: String
-  description: String
-  image?: String
-  largeImage?: String
-  price: Int
-  createdAt: DateTime
-  updatedAt: DateTime
+ */
+export interface UserEdge {
+  node: User
+  cursor: String
 }
 
 /*
@@ -1144,16 +1370,12 @@ export interface PageInfo {
   endCursor?: String
 }
 
-/*
- * An edge in a connection.
-
- */
-export interface UserEdge {
-  node: User
-  cursor: String
+export interface ItemSubscriptionPayload {
+  mutation: MutationType
+  node?: Item
+  updatedFields?: String[]
+  previousValues?: ItemPreviousValues
 }
-
-export type DateTime = Date | string
 
 /*
 The `Long` scalar type represents non-fractional signed whole numeric values.
@@ -1168,16 +1390,23 @@ export type ID_Input = string | number
 export type ID_Output = string
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string
+
+export type DateTime = Date | string
+
+/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number
