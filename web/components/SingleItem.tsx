@@ -6,7 +6,7 @@ import {
   SingleItemQuery,
   SingleItemQueryVariables
 } from '../graphql/schemaTypes';
-import { SINGLE_ITEM_QUERY } from 'graphql/queries/SingleItemQuery';
+import { SINGLE_ITEM_QUERY } from '../graphql/queries/SingleItemQuery';
 import { ErrorMessage } from '../components/ErrorMessage';
 
 const SingleItemStyles = styled.div`
@@ -48,11 +48,11 @@ export class SingleItem extends React.Component<{ id: any }> {
             return <p>Loading...</p>;
           }
 
-          if (!data.item) {
+          const { item } = data;
+
+          if (!item) {
             return <p>No item found for {this.props.id}</p>;
           }
-
-          const { item } = data;
 
           return (
             <SingleItemStyles>

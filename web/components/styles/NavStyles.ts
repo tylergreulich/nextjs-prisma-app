@@ -10,6 +10,8 @@ export const NavStyles = styled.ul`
   button {
     padding: 1rem 3rem;
     display: flex;
+    color: ${({ theme }) => theme.black};
+    font-weight: 800;
     align-items: center;
     position: relative;
     text-transform: uppercase;

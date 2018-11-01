@@ -14,10 +14,10 @@ import {
   TextAreaOrInputElementEvent
 } from '../interfaces/shared/FormEvents';
 import { CreateItemState } from '../interfaces/CreateItem.interface';
-import { ErrorMesssage } from './ErrorMessage';
+import { ErrorMessage } from './ErrorMessage';
 import { cloudinaryUrl } from '../config';
 
-import { CREATE_ITEM_MUTATION } from 'graphql/mutations/CreateItemMutation';
+import { CREATE_ITEM_MUTATION } from '../graphql/mutations/CreateItemMutation';
 
 export class CreateItem extends React.Component<{}, CreateItemState> {
   state: CreateItemState = {
@@ -79,7 +79,7 @@ export class CreateItem extends React.Component<{}, CreateItemState> {
               });
             }}
           >
-            <ErrorMesssage error={error} />
+            <ErrorMessage error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
               <label htmlFor="file">Image</label>
               <input

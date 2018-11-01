@@ -1,32 +1,19 @@
 import * as React from 'react';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import {
   RegisterMutation,
   RegisterMutationVariables
 } from '../graphql/schemaTypes';
+import { REGISTER_MUTATION } from '../graphql/mutations/RegisterMutation';
+import { CURRENT_USER_QUERY } from '../graphql/queries/CurrentUserQuery';
+import {
+  InputElementEvent,
+  FormElementEvent
+} from '../interfaces/shared/FormEvents';
+import { RegisterProps, RegisterState } from '../interfaces/Register.interface';
 
-interface RegisterState {
-  email: string;
-  name: string;
-  password: string;
-}
-
-interface RegisterProps {
-  onSubmit: jest.Mock<{}>;
-}
-
-export const REGISTER_MUTATION = gql`
-  mutation REGISTER_MUTATION(
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
-    id
-    name
-    email
-  }
-`;
+import { Form } from './styles/Form';
+import { ErrorMessage } from './ErrorMessage';
 
 export class Register extends React.Component<RegisterProps, RegisterState> {
   state: RegisterState = {
@@ -35,11 +22,7 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
     password: ''
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (event: InputElementEvent) => {
     const { name, value } = event.currentTarget;
 
     this.setState({
@@ -55,43 +38,52 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
       <Mutation<RegisterMutation, RegisterMutationVariables>
         mutation={REGISTER_MUTATION}
         variables={this.state}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-        {(register, { data, loading }) => {
-          if (loading) {
-            return <div>Loading...</div>;
-          }
-
+        {(register, { error, loading }) => {
           return (
-            <form
-              onSubmit={async (event: React.FormEvent<HTMLFormElement>) => {
+            <Form
+              method="post"
+              onSubmit={(event: FormElementEvent) => {
                 event.preventDefault();
-                const { data }: any = await register();
-                console.log(data);
+                register();
+                this.setState({
+                  email: '',
+                  name: '',
+                  password: ''
+                });
               }}
             >
-              <input
-                type="text"
-                name="email"
-                value={email}
-                placeholder="Email"
-                onChange={this.handleChange}
-              />
-              <input
-                type="text"
-                name="name"
-                value={name}
-                placeholder="Name"
-                onChange={this.handleChange}
-              />
-              <input
-                type="password"
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={this.handleChange}
-              />
-              <button type="submit">Submit</button>
-            </form>
+              <fieldset disabled={loading} aria-busy={loading}>
+                <h2>Register For An Account</h2>
+                <ErrorMessage error={error} />
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={this.handleChange}
+                  placeholder="Email"
+                />
+                <label htmlFor="Name">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={this.handleChange}
+                  placeholder="Name"
+                />
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={this.handleChange}
+                  placeholder="Password"
+                />
+                <button type="submit">Register</button>
+              </fieldset>
+            </Form>
           );
         }}
       </Mutation>

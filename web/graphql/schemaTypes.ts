@@ -20,6 +20,23 @@ export interface GetItemsQuery {
   items: ItemProps[];
 }
 
+export interface GetItemsQueryVariables {
+  skip: number;
+  first?: number;
+}
+
+// ====================================================
+// GraphQL query operation: CurrentUserQuery
+// ====================================================
+
+export interface CurrentUserQuery_currentUserQuery {
+  payload: any;
+}
+
+export interface CurrentUserQuery {
+  currentUser: CurrentUserQuery_currentUserQuery | null;
+}
+
 // ====================================================
 // GraphQL mutation operation: CreateItemMutation
 // ====================================================
@@ -76,5 +93,22 @@ export interface RegisterMutation {
 export interface RegisterMutationVariables {
   email: string;
   name: string;
+  password: string;
+}
+
+// ====================================================
+// GraphQL mutation operation: RegisterMutation
+// ====================================================
+
+interface LoginMutation_loginMutation {
+  id: string;
+}
+
+export interface LoginMutation {
+  login: LoginMutation_loginMutation | null;
+}
+
+export interface LoginMutationVariables {
+  email: string;
   password: string;
 }

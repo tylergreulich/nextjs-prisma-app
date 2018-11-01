@@ -1,7 +1,24 @@
 import 'dotenv/config';
+import { Response, NextFunction } from 'express';
+import * as jwt from 'jsonwebtoken';
 import { createServer } from './createServer';
 
+import * as cookieParser from 'cookie-parser';
+
 const server = createServer();
+
+server.express.use(cookieParser());
+
+server.express.use(
+  (req: any, res: Response, next: NextFunction): void => {
+    const { token } = req.cookies;
+    if (token) {
+      const { userId }: any = jwt.verify(token, process.env.APP_SECRET!);
+      req.userId = userId;
+    }
+    next();
+  }
+);
 
 server.start(
   {

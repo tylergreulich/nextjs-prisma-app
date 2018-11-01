@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import * as React from 'react';
+import styled from 'styled-components';
 
 const ErrorStyles = styled.div`
   padding: 2rem;
@@ -17,16 +17,19 @@ const ErrorStyles = styled.div`
 `;
 
 export const ErrorMessage = ({ error }: any) => {
+
   if (!error || !error.message) {
     return null;
   }
 
+  const { networkError } = error;
+
   if (
-    error.networkError &&
-    error.networkError.result &&
-    error.networkError.result.errors.length
+    networkError &&
+    networkError.result &&
+    networkError.result.errors.length
   ) {
-    return error.networkError.result.errors.map((newError: any, index: any) => (
+    return networkError.result.errors.map((newError: any, index: any) => (
       <ErrorStyles key={index}>
         <p data-test="graphql-error">
           <strong>Shoot!</strong>

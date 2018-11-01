@@ -3,9 +3,11 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 
 import { GET_ITEMS_QUERY } from '../graphql/queries/GetItemsQuery';
-import { GetItemsQuery } from '../graphql/schemaTypes';
+import { GetItemsQuery, GetItemsQueryVariables } from '../graphql/schemaTypes';
 import { ItemProps } from '../interfaces/Item.interface';
 import { Item } from './Item';
+import { Pagination } from './Pagination';
+import { perPage } from '../config';
 
 const Center = styled.div`
   text-align: center;
@@ -19,11 +21,17 @@ const ItemsList = styled.div`
   margin: 0 auto;
 `;
 
-export class Items extends React.Component {
+export class Items extends React.Component<{ page: number }> {
   render() {
+    const { page } = this.props;
+
     return (
       <Center>
-        <Query<GetItemsQuery> query={GET_ITEMS_QUERY}>
+        <Pagination page={page} />
+        <Query<GetItemsQuery, GetItemsQueryVariables>
+          query={GET_ITEMS_QUERY}
+          variables={{ skip: page * perPage - perPage }}
+        >
           {({ data, error, loading }) => {
             if (loading) {
               return <p>Loading...</p>;
@@ -42,6 +50,7 @@ export class Items extends React.Component {
             );
           }}
         </Query>
+        <Pagination page={page} />
       </Center>
     );
   }

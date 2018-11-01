@@ -1,8 +1,15 @@
 import { Prisma } from './generated/prisma';
+import { Request, Response } from 'express';
+// import * as jwt from 'jsonwebtoken';
+
+interface IRequest extends Request {
+  userId: any;
+}
 
 export interface Context {
   db: Prisma;
-  request: any;
+  request: IRequest;
+  response: Response;
 }
 
 export const hasPermission = (user, permissionsNeeded) => {
@@ -17,3 +24,14 @@ export const hasPermission = (user, permissionsNeeded) => {
       `);
   }
 };
+
+// export const signJwtToken = (user: User, response: Response) => {
+//   const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET!);
+
+//   response.cookie('token', token, {
+//     httpOnly: true,
+//     maxAge: 1000 * 60 * 60 * 24 * 365 // 1y
+//   });
+
+//   return user;
+// };

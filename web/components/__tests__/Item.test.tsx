@@ -4,7 +4,7 @@ import { render } from 'react-testing-library';
 
 import { Item } from '../Item';
 
-import { ItemProps } from '../../graphql/schemaTypes';
+import { ItemProps } from '../../interfaces/Item.interface';
 
 const fakeItem: ItemProps = {
   id: '1',
