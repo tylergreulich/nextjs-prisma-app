@@ -106,67 +106,65 @@ export const Mutation = {
     response.clearCookie('token');
     return { message: 'Successfully logged out!' };
   },
-  requestReset: async (_, { email }: User, { db }: Context, info) => {
-    const user = await db.query.user({
-      where: { email }
-    });
+  requestReset: async (_, { email }, ctx, info) => {
+    const user = await ctx.db.query.user({ where: { email } });
 
     if (!user) {
-      throw new Error(`No such user found with email ${email}`);
+      throw new Error(`No such user found for email ${email}`);
     }
 
-    const randomBytesPromisified = promisify(randomBytes);
-    const resetToken = (await randomBytesPromisified(20)).toString('hex');
+    const randomBytesPromiseified = promisify(randomBytes);
 
-    const resetTokenExpiry = Date.now() * 3600000; // 1hr from now
+    const resetToken = (await randomBytesPromiseified(20)).toString('hex');
 
-    const res = await db.mutation.updateUser({
+    const resetTokenExpiry = Date.now() + 3600000; // 1hr
+
+    const res = await ctx.db.mutation.updateUser({
       where: { email },
-      data: {
-        resetToken,
-        resetTokenExpiry
-      }
+      data: { resetToken, resetTokenExpiry }
     });
 
     console.log(res);
 
-    return { message: 'Thanks' };
+    return { message: 'Thanks!' };
+    // 3. Email them that reset token
   },
-  resetPassword: async (_, args, { db, response }: Context, info) => {
-    if (args.newPassword !== args.confirmPassword) {
-      throw new Error("Your passwords don't match");
+  resetPassword: async (
+    parent,
+    { email, password, confirmPassword, resetToken },
+    ctx,
+    info
+  ) => {
+    if (password !== confirmPassword) {
+      throw new Error("Your Passwords don't match!");
     }
 
-    const [user] = await db.query.users({
+    const [user] = await ctx.db.query.users({
       where: {
-        resetToken: args.resetToken,
+        resetToken: resetToken,
         resetTokenExpiry_gte: Date.now() - 3600000
       }
     });
-
     if (!user) {
-      throw new Error('This token is either invalid or expired');
+      throw new Error('This token is either invalid or expired!');
     }
 
-    const password = await bcrypt.hash(args.newPassword, 10);
+    const newPassword = await bcrypt.hash(password, 10);
 
-    const updatedUser = await db.mutation.updateUser({
+    const updatedUser = await ctx.db.mutation.updateUser({
       where: { email: user.email },
       data: {
-        password,
-        resetToken: undefined,
-        resetTokenExpiry: undefined
+        password: newPassword,
+        resetToken: null,
+        resetTokenExpiry: null
       }
     });
 
-    const token = jwt.sign(
-      { userId: updatedUser!.id },
-      process.env.APP_SECRET!
-    );
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET!);
 
-    response.cookie('token', token, {
+    ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365 // 1y
+      maxAge: 1000 * 60 * 60 * 24 * 365
     });
 
     return updatedUser;

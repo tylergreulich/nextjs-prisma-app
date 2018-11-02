@@ -3,18 +3,23 @@ import { render, fireEvent } from 'react-testing-library';
 import { MockedProvider, MockedResponse } from 'react-apollo/test-utils';
 
 import { fakeUser, type } from '../../lib/testUtils';
-import { Register, REGISTER_MUTATION } from '../Register';
+import { Register } from '../Register';
+import { REGISTER_MUTATION } from '../../graphql/mutations/RegisterMutation';
+import { CURRENT_USER_QUERY } from '../../graphql/queries/CurrentUserQuery';
 
-import { wait } from 'waait';
+// const wait = (amount = 0) =>
+//   new Promise(resolve => setTimeout(resolve, amount));
 
 const { email, name } = fakeUser();
+const password = 'abc';
 const mocks: MockedResponse[] = [
   {
     request: {
       query: REGISTER_MUTATION,
       variables: {
         email,
-        name
+        name,
+        password
       }
     },
     result: {
@@ -27,11 +32,27 @@ const mocks: MockedResponse[] = [
         }
       }
     }
+  },
+  {
+    request: {
+      query: CURRENT_USER_QUERY
+    },
+    result: {
+      data: {
+        me: {
+          __typename: 'User',
+          id: 'abc123',
+          email,
+          name,
+          permissions: []
+        }
+      }
+    }
   }
 ];
 
 describe('<Register />', () => {
-  it('calls the mutation properly', async () => {
+  it('calls the mutation properly', () => {
     const handleSubmit = jest.fn();
 
     const { getByPlaceholderText, getByText } = render(
@@ -40,25 +61,21 @@ describe('<Register />', () => {
       </MockedProvider>
     );
 
-    const emailInput = getByPlaceholderText('Email') as HTMLInputElement;
-    const nameInput = getByPlaceholderText('Name') as HTMLInputElement;
-    const passwordInput = getByPlaceholderText('Password') as HTMLInputElement;
+    const emailInput = getByPlaceholderText(/email/i) as HTMLInputElement;
+    const nameInput = getByPlaceholderText(/name/i) as HTMLInputElement;
+    const passwordInput = getByPlaceholderText(/password/i) as HTMLInputElement;
 
-    const submitButton = getByText('Submit') as HTMLButtonElement;
+    const submitButton = getByText(/register/i) as HTMLButtonElement;
 
     type(emailInput, email);
     type(nameInput, name);
-    type(passwordInput, 'abc');
-
-    await wait(0);
+    type(passwordInput, password);
 
     expect(emailInput.value).toBe(email);
     expect(nameInput.value).toBe(name);
-    expect(passwordInput.value).toBe('abc');
+    expect(passwordInput.value).toBe(password);
 
     fireEvent(submitButton, new MouseEvent('click'));
-
-    await wait(0);
 
     expect(handleSubmit).toHaveBeenCalled();
   });

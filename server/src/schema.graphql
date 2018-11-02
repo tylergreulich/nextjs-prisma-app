@@ -20,7 +20,7 @@ type Mutation {
   requestReset(email: String!): SuccessMessage
   resetPassword(
     resetToken: String!
-    newPassword: String!
+    password: String!
     confirmPassword: String!
   ): User!
 }

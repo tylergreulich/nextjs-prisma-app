@@ -2,6 +2,9 @@
   "name": "nextjs-prisma-app",
   "version": "0.1.0",
   "jest": {
+    "setupFiles": [
+      "./shimSetup.ts"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
