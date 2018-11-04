@@ -29,7 +29,7 @@ export interface GetItemsQueryVariables {
 // GraphQL query operation: CurrentUserQuery
 // ====================================================
 
-export interface CurrentUserQuery_currentUserQuery {
+interface CurrentUserQuery_currentUserQuery {
   payload: any;
 }
 
@@ -41,7 +41,7 @@ export interface CurrentUserQuery {
 // GraphQL mutation operation: CreateItemMutation
 // ====================================================
 
-export interface CreateItemMutation_createItemMutation {
+interface CreateItemMutation_createItemMutation {
   id: string;
 }
 
@@ -61,7 +61,7 @@ export interface CreateItemMutationVariables {
 // GraphQL mutation operation: DeleteItemMutation
 // ====================================================
 
-export interface DeleteItemMutation_deleteItemMutation {
+interface DeleteItemMutation_deleteItemMutation {
   id: string;
   title: string;
   description: string;
@@ -83,7 +83,7 @@ export interface DeleteItemMutationVariables {
 interface RegisterMutation_registerMutation {
   id: string;
   name: string;
-  password: string;
+  email: string;
 }
 
 export interface RegisterMutation {
