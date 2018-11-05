@@ -4,8 +4,9 @@ import { promisify } from 'util';
 import { randomBytes } from 'crypto';
 
 import { User } from './../generated/prisma';
-import { Context } from './../utils';
 import { Item, ItemCreateInput } from '../generated/prisma';
+import { setCookie } from '../setCookie';
+import { Context } from '../utils';
 
 export const Mutation = {
   createItem: async (_, args: ItemCreateInput, { db }: Context, info) => {
@@ -42,17 +43,12 @@ export const Mutation = {
 
     return db.mutation.deleteItem({ where }, info);
   },
-  register: async (
-    _,
-    { email, name, password }: User,
-    { db, response }: Context,
-    info
-  ) => {
+  register: async (_, { email, name, password }: User, ctx: Context, info) => {
     email = email.toLowerCase();
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await db.mutation.createUser(
+    const user = await ctx.db.mutation.createUser(
       {
         data: {
           email,
@@ -66,20 +62,12 @@ export const Mutation = {
 
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET!);
 
-    response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365 // 1y
-    });
+    setCookie(token, ctx);
 
     return user;
   },
-  login: async (
-    _,
-    { email, password }: User,
-    { db, response }: Context,
-    info
-  ) => {
-    const user = await db.query.user({
+  login: async (_, { email, password }: User, ctx: Context, info) => {
+    const user = await ctx.db.query.user({
       where: { email }
     });
 
@@ -95,15 +83,12 @@ export const Mutation = {
 
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET!);
 
-    response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365 // 1y
-    });
+    setCookie(token, ctx);
 
     return user;
   },
-  logout: (_, __, { response }: Context) => {
-    response.clearCookie('token');
+  logout: (_, __, ctx: Context) => {
+    ctx.response.clearCookie('token');
     return { message: 'Successfully logged out!' };
   },
   requestReset: async (_, { email }, ctx, info) => {
@@ -162,10 +147,7 @@ export const Mutation = {
 
     const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET!);
 
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365
-    });
+    setCookie(token, ctx);
 
     return updatedUser;
   }
