@@ -47,9 +47,9 @@
   },
   "scripts": {
     "test": "jest",
-    "next-dev": "next -p 7777",
-    "next-build": "next build",
-    "next-start": "next start"
+    "dev": "next -p 7777",
+    "build": "next build",
+    "start": "next start"
   },
   "devDependencies": {
     "@types/graphql": "^14.0.3",
