@@ -126,7 +126,7 @@ export const Mutation = {
 
     const [user] = await ctx.db.query.users({
       where: {
-        resetToken: resetToken,
+        resetToken,
         resetTokenExpiry_gte: Date.now() - 3600000
       }
     });
