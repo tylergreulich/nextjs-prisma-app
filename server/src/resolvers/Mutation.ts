@@ -5,8 +5,7 @@ import { randomBytes } from 'crypto';
 
 import { User } from './../generated/prisma';
 import { Item, ItemCreateInput } from '../generated/prisma';
-import { setCookie } from '../setCookie';
-import { Context } from '../utils';
+import { Context, setCookie } from '../utils';
 
 export const Mutation = {
   createItem: async (_, args: ItemCreateInput, { db }: Context, info) => {

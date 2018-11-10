@@ -25,6 +25,14 @@ export const hasPermission = (user, permissionsNeeded) => {
   }
 };
 
+export const setCookie = (token: string, ctx: Context) => {
+  return ctx.response.cookie('token', token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 365
+  });
+};
+
+
 // export const signJwtToken = (user: User, response: Response) => {
 //   const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET!);
 
