@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { GET_ITEMS_QUERY } from '../graphql/queries/GetItemsQuery';
 import { GetItemsQuery, GetItemsQueryVariables } from '../graphql/schemaTypes';
-import { ItemProps } from '../interfaces/Item.interface';
+import { ItemProps } from '../interfaces/shared/Item.interface';
 import { Item } from './Item';
 import { Pagination } from './Pagination';
 import { perPage } from '../config';

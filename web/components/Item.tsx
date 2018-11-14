@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 
-import { ItemProps } from '../interfaces/Item.interface';
+import { ItemProps } from '../interfaces/shared/Item.interface';
 import { ItemStyles } from './styles/ItemStyles';
 import { Title } from './styles/Title';
 import { PriceTag } from './styles/PriceTag';
