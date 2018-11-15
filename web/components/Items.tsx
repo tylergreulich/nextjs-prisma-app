@@ -7,7 +7,6 @@ import { GetItemsQuery, GetItemsQueryVariables } from '../graphql/schemaTypes';
 import { ItemProps } from '../interfaces/shared/Item.interface';
 import { Item } from './Item';
 import { Pagination } from './Pagination';
-import { perPage } from '../config';
 
 const Center = styled.div`
   text-align: center;
@@ -20,6 +19,8 @@ const ItemsList = styled.div`
   max-width: ${({ theme }) => theme.maxWidth};
   margin: 0 auto;
 `;
+
+const perPage = 4;
 
 export class Items extends React.Component<{ page: number }> {
   render() {
