@@ -9,7 +9,7 @@ import {
   DeleteItemMutationVariables
 } from '../graphql/schemaTypes';
 
-import { ItemProps } from '../interfaces/Item.interface';
+import { ItemProps } from 'interfaces/shared/Item.interface';
 
 export class DeleteItem extends React.Component<{ id: string }> {
   update = (cache: InMemoryCache, payload: any) => {
