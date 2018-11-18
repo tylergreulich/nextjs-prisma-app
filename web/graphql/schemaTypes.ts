@@ -1,4 +1,4 @@
-import { ItemProps } from '../interfaces/Item.interface';
+import { ItemProps } from 'interfaces/shared/Item.interface';
 
 // ====================================================
 // GraphQL query operation: SingleItemQuery

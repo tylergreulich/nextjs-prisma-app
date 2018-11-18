@@ -57,16 +57,12 @@ injectGlobal`
   }
 `;
 
-export class Page extends React.Component {
-  render() {
-    return (
-      <ThemeProvider theme={styledTheme}>
-        <StyledPage>
-          <Meta />
-          <Header />
-          <Inner>{this.props.children}</Inner>
-        </StyledPage>
-      </ThemeProvider>
-    );
-  }
-}
+export const Page: React.SFC = ({ children }) => (
+  <ThemeProvider theme={styledTheme}>
+    <StyledPage>
+      <Meta />
+      <Header />
+      <Inner>{children}</Inner>
+    </StyledPage>
+  </ThemeProvider>
+);
