@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, MutationFn } from 'react-apollo';
 import { LoginMutation, LoginMutationVariables } from '../graphql/schemaTypes';
 import { LOGIN_MUTATION } from '../graphql/mutations/LoginMutation';
 import { CURRENT_USER_QUERY } from '../graphql/queries/CurrentUserQuery';
@@ -18,8 +18,16 @@ export class Login extends React.Component<LoginProps, LoginState> {
     password: ''
   };
 
-  handleChange = (event: InputElementEvent) => {
-    const { name, value } = event.currentTarget;
+  handleLogin = async (event: FormElementEvent, login: MutationFn) => {
+    event.preventDefault();
+
+    await login({
+      variables: this.state
+    });
+  };
+
+  handleChange = ({ currentTarget }: InputElementEvent) => {
+    const { name, value } = currentTarget;
 
     this.setState({
       ...this.state,
@@ -40,14 +48,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
           return (
             <Form
               method="post"
-              onSubmit={(event: FormElementEvent) => {
-                event.preventDefault();
-                login();
-                this.setState({
-                  email: '',
-                  password: ''
-                });
-              }}
+              onSubmit={(event: FormElementEvent) =>
+                this.handleLogin(event, login)
+              }
             >
               <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Please Login</h2>

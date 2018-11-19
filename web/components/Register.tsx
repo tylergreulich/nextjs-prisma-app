@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, MutationFn } from 'react-apollo';
 import {
   RegisterMutation,
   RegisterMutationVariables
@@ -22,6 +22,15 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
     password: ''
   };
 
+  handleRegister = async (event: FormElementEvent, register: MutationFn) => {
+    event.preventDefault();
+
+    await register({
+      variables: this.state,
+      refetchQueries: [{ query: CURRENT_USER_QUERY }]
+    });
+  };
+
   handleChange = (event: InputElementEvent) => {
     const { name, value } = event.currentTarget;
 
@@ -37,22 +46,14 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
     return (
       <Mutation<RegisterMutation, RegisterMutationVariables>
         mutation={REGISTER_MUTATION}
-        variables={this.state}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
         {(register, { error, loading }) => {
           return (
             <Form
               method="post"
-              onSubmit={(event: FormElementEvent) => {
-                event.preventDefault();
-                register();
-                this.setState({
-                  email: '',
-                  name: '',
-                  password: ''
-                });
-              }}
+              onSubmit={(event: FormElementEvent) =>
+                this.handleRegister(event, register)
+              }
             >
               <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Register For An Account</h2>
