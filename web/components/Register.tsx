@@ -31,8 +31,8 @@ export class Register extends React.Component<RegisterProps, RegisterState> {
     });
   };
 
-  handleChange = (event: InputElementEvent) => {
-    const { name, value } = event.currentTarget;
+  handleChange = ({ currentTarget }: InputElementEvent) => {
+    const { name, value } = currentTarget;
 
     this.setState({
       ...this.state,
