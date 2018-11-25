@@ -7,8 +7,8 @@ type SuccessMessage {
 type Mutation {
   createItem(data: ItemCreateInput!): Item!
   updateItem(data: ItemUpdateInput!): Item!
-  deleteItem(data: ItemDeleteInput!): Item
-  register(email: String!, name: String!, password: String!): User!
+  deleteItem(data: ItemDeleteInput!): Item!
+  register(data: RegisterInput!): User!
   login(email: String!, password: String!): User!
   logout: SuccessMessage
   requestReset(email: String!): SuccessMessage
