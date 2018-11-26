@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { createServer } from './createServer';
 
@@ -10,7 +10,7 @@ const server = createServer();
 server.express.use(cookieParser());
 
 server.express.use(
-  (req: any, res: Response, next: NextFunction): void => {
+  (req: any, __: any, next: NextFunction): void => {
     const { token } = req.cookies;
     if (token) {
       const { userId }: any = jwt.verify(token, process.env.APP_SECRET!);
@@ -29,3 +29,4 @@ server.start(
   },
   ({ port }) => console.info(`Server is running on http://localhost:${port}`)
 );
+

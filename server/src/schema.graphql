@@ -9,7 +9,7 @@ type Mutation {
   updateItem(data: ItemUpdateInput!): Item!
   deleteItem(data: ItemDeleteInput!): Item!
   register(data: RegisterInput!): User!
-  login(email: String!, password: String!): User!
+  login(data: LoginInput!): User!
   logout: SuccessMessage
   requestReset(email: String!): SuccessMessage
   resetPassword(
