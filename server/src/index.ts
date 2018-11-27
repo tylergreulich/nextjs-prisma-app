@@ -5,22 +5,22 @@ import { createServer } from './createServer';
 
 import * as cookieParser from 'cookie-parser';
 
-const server = createServer();
+const { express, start } = createServer();
 
-server.express.use(cookieParser());
+express.use(cookieParser());
 
-server.express.use(
-  (req: any, __: any, next: NextFunction): void => {
-    const { token } = req.cookies;
+express.use(
+  ({ cookies, userId: reqUserId }: any, __: any, next: NextFunction): void => {
+    const { token } = cookies;
     if (token) {
       const { userId }: any = jwt.verify(token, process.env.APP_SECRET!);
-      req.userId = userId;
+      reqUserId = userId;
     }
     next();
   }
 );
 
-server.start(
+start(
   {
     cors: {
       credentials: true,
@@ -29,4 +29,3 @@ server.start(
   },
   ({ port }) => console.info(`Server is running on http://localhost:${port}`)
 );
-
