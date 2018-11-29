@@ -16,8 +16,11 @@ const ErrorStyles = styled.div`
   }
 `;
 
-export const ErrorMessage = ({ error }: any) => {
+interface NewErrorInterface {
+  message: string;
+}
 
+export const ErrorMessage = ({ error }: any) => {
   if (!error || !error.message) {
     return null;
   }
@@ -29,14 +32,16 @@ export const ErrorMessage = ({ error }: any) => {
     networkError.result &&
     networkError.result.errors.length
   ) {
-    return networkError.result.errors.map((newError: any, index: any) => (
-      <ErrorStyles key={index}>
-        <p data-test="graphql-error">
-          <strong>Shoot!</strong>
-          {newError.message.replace('GraphQL error: ', '')}
-        </p>
-      </ErrorStyles>
-    ));
+    return networkError.result.errors.map(
+      ({ message }: NewErrorInterface, index: string) => (
+        <ErrorStyles key={index}>
+          <p data-test="graphql-error">
+            <strong>Shoot!</strong>
+            {message.replace('GraphQL error: ', '')}
+          </p>
+        </ErrorStyles>
+      )
+    );
   }
   return (
     <ErrorStyles>
