@@ -12,11 +12,7 @@ type Mutation {
   login(data: LoginInput!): User!
   logout: SuccessMessage
   requestReset(data: RequestResetInput!): SuccessMessage
-  resetPassword(
-    resetToken: String!
-    password: String!
-    confirmPassword: String!
-  ): User!
+  resetPassword(data: ResetPasswordInput!): User!
 }
 
 type Query {
