@@ -25,9 +25,9 @@ export const hasPermission = (user, permissionsNeeded) => {
   }
 };
 
-export const setCookie = ({ token, ctx }: ICookie) => {
-  return ctx.response.cookie('token', token, {
+export const setCookie = ({ token, ctx }: ICookie) =>
+  ctx.response.cookie('token', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365
-  });
+  );
 };
