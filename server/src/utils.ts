@@ -1,6 +1,6 @@
 import { Prisma } from './generated/prisma';
 import { Request, Response } from 'express';
-import { ICookie } from './interfaces/Cookie.interface'
+import { ICookie } from './interfaces/Cookie.interface';
 
 interface IRequest extends Request {
   userId: any;
@@ -12,7 +12,20 @@ export interface Context {
   response: Response;
 }
 
-export const hasPermission = (user, permissionsNeeded) => {
+enum Permission {
+  ADMIN,
+  USER,
+  ITEMCREATE,
+  ITEMUPDATE,
+  ITEMDELETE,
+  PERMISSIONUPDATE
+}
+
+interface User {
+  permissions: [Permission];
+}
+
+export const hasPermission = (user: User, permissionsNeeded) => {
   const matchedPermissions = user.permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave)
   );
@@ -29,5 +42,4 @@ export const setCookie = ({ token, ctx }: ICookie) =>
   ctx.response.cookie('token', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365
-  );
-};
+  });
