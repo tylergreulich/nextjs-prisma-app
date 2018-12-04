@@ -25,15 +25,15 @@ interface User {
   permissions: [Permission];
 }
 
-export const hasPermission = (user: User, permissionsNeeded) => {
-  const matchedPermissions = user.permissions.filter(permissionTheyHave =>
+export const hasPermission = ({ permissions }: User, permissionsNeeded) => {
+  const matchedPermissions = permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave)
   );
   if (!matchedPermissions.length) {
     throw new Error(`You have insufficient permissions
       : ${permissionsNeeded}
       You Have:
-      ${user.permissions}
+      ${permissions}
       `);
   }
 };
