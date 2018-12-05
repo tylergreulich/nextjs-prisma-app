@@ -2,9 +2,7 @@
   "name": "sick-fits",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "dev": "npm-run-all --parallel start playground",
     "deploy": "prisma deploy",
-    "playground": "graphql playground"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
