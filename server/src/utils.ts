@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ICookie } from './interfaces/Cookie.interface';
 
 interface IRequest extends Request {
-  userId: any;
+  userId: string;
 }
 
 export interface Context {
