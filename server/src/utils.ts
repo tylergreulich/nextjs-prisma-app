@@ -1,16 +1,5 @@
 import { Prisma } from './generated/prisma';
-import { Request, Response } from 'express';
 import { ICookie } from './interfaces/Cookie.interface';
-
-interface IRequest extends Request {
-  userId: string;
-}
-
-export interface Context {
-  db: Prisma;
-  request: IRequest;
-  response: Response;
-}
 
 enum Permission {
   ADMIN,
