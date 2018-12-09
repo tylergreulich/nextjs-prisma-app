@@ -1,4 +1,3 @@
-import { Prisma } from './generated/prisma';
 import { ICookie } from './interfaces/Cookie.interface';
 
 enum Permission {
