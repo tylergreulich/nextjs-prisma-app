@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { Prisma } from 'prisma-binding';
 
-interface IRequest extends Request {
+export interface IRequest extends Request {
   userId: string;
 }
 

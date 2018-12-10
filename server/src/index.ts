@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import { NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { NextFunction } from 'express';
 import { createServer } from './createServer';
 
 import * as cookieParser from 'cookie-parser';
