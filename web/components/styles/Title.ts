@@ -14,5 +14,7 @@ export const Title = styled.h3`
     text-align: center;
     color: white;
     padding: 0 1rem;
+    color: #e8c834;
+    background-color: #ffdf00;
   }
 `;

@@ -2,10 +2,10 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
-
+import { Context } from './../interfaces/Context.interface';
+import { setCookie } from './../utils';
 import { User } from './../generated/prisma';
 import { Item, ItemCreateInput } from '../generated/prisma';
-import { Context, setCookie } from '../utils';
 
 export const Mutation = {
   createItem: async (_, args: ItemCreateInput, { db }: Context, info) => {
@@ -36,7 +36,7 @@ export const Mutation = {
   deleteItem: async (_, { id }: Item, { db }: Context, info) => {
     const where = { id };
 
-    await db.query.item({ where }, `{ id title }`);
+    await db.query.item({ where }, `{ id title }` as any);
 
     // TODO: check if they own it or have the permissions
 

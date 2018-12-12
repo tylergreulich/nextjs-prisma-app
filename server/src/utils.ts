@@ -1,4 +1,4 @@
-import { ICookie } from './interfaces/Cookie.interface';
+import { Context } from './interfaces/Context.interface';
 
 enum Permission {
   ADMIN,
@@ -26,7 +26,7 @@ export const hasPermission = ({ permissions }: User, permissionsNeeded) => {
   }
 };
 
-export const setCookie = ({ token, ctx }: ICookie) =>
+export const setCookie = (token: string, ctx: Context) =>
   ctx.response.cookie('token', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365
