@@ -1,4 +1,4 @@
-import { Context } from './../utils';
+import { Context } from '../interfaces/Context.interface';
 import { forwardTo } from 'prisma-binding';
 
 export const Query = {
