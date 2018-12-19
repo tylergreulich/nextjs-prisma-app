@@ -7,7 +7,6 @@
     "rootDir": "src",
     "outDir": "dist",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
-    "removeComments": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
